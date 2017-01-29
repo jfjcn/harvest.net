@@ -7,7 +7,7 @@ namespace Harvest.Net.Models
     /// Model for interacting with users in the harvest API.
     /// </summary>
     [SerializeAs(Name = "user")]
-    public class User : IModel
+    public class User : IModel, IEquatable<User>
     {
         /// <summary>
         /// Identifier of the user.
@@ -110,5 +110,25 @@ namespace Harvest.Net.Models
         /// To set a timezone other than the account default.
         /// </summary>
         public string Timezone { get; set; }
+
+        public bool Equals(User other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((User)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }
