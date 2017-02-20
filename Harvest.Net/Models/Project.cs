@@ -9,7 +9,7 @@ namespace Harvest.Net.Models
     /// This will represent a project in some specific context.
     /// </summary>
     [SerializeAs(Name = "project")]
-    public class Project : IModel
+    public class Project : IModel, IEquatable<Project>
     {
         /// <summary>
         /// Project ID.
@@ -179,5 +179,25 @@ namespace Harvest.Net.Models
         /// Only present on the Daily resource.
         /// </summary>
         public List<Task> Tasks { get; set; }
+
+        public bool Equals(Project other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Project)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }
